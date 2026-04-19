@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+<head>
 <link rel="icon" href="smartstorea.ico" type="image/png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,155 +9,188 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --ink:#0d0d12;--ink2:#1c1c28;--ink3:#252535;
-  --surface:#f5f4f0;--surface2:#edecea;--surface3:#e4e2de;
-  --accent:#ff4d1c;--accent2:#ff6b3d;--gold:#b8952a;
-  --text:#0d0d12;--text2:#4a4a5e;--text3:#8a8a9e;
-  --white:#ffffff;
-  --radius:14px;--radius-sm:8px;
+  --bg:#080c10;--bg2:#0d1219;--bg3:#111820;
+  --surface:#141c26;--surface2:#1a2535;--surface3:#202f42;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --accent:#00e5ff;--accent2:#7b2fff;--accent3:#ff4d1c;
+  --gold:#e8b84b;
+  --text:#f0f4f8;--text2:#8a9ab0;--text3:#4a5a70;
+  --radius:16px;--radius-sm:10px;
   --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--font-body);background:var(--surface);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-weight:300}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:3px}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.45}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:200;background:rgba(245,244,240,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--surface3);padding:0 clamp(1rem,4vw,3rem)}
-.nav-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
-.logo{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--ink);text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:6px;flex-shrink:0}
+nav{position:sticky;top:0;z-index:200;padding:0 clamp(1rem,4vw,3rem);border-bottom:1px solid transparent;transition:all .4s var(--ease)}
+nav.scrolled{background:rgba(8,12,16,.92);backdrop-filter:blur(20px);border-bottom-color:var(--border)}
+.nav-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px;gap:24px}
+.logo{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
 .logo-accent{color:var(--accent)}
-.logo-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;display:inline-block;margin-bottom:2px;animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.logo-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;display:inline-block;margin-bottom:2px;animation:blink 2.5s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,255,.4)}60%{opacity:.3;box-shadow:0 0 0 6px rgba(0,229,255,0)}}
 .nav-links{display:flex;gap:2px;list-style:none}
-.nav-links a{font-size:14px;font-weight:500;color:var(--text2);text-decoration:none;padding:7px 14px;border-radius:var(--radius-sm);transition:all .2s}
-.nav-links a:hover{color:var(--text);background:var(--surface2)}
-.btn-wa-nav{background:var(--ink);color:var(--white);text-decoration:none;padding:9px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.btn-wa-nav:hover{background:var(--ink2);transform:translateY(-1px)}
-.ham{display:none;flex-direction:column;gap:4px;cursor:pointer;border:none;background:none;padding:6px}
-.ham span{width:20px;height:2px;background:var(--ink);border-radius:2px;display:block}
+.nav-links a{font-size:13.5px;font-weight:400;color:var(--text2);text-decoration:none;padding:7px 14px;border-radius:var(--radius-sm);transition:all .2s}
+.nav-links a:hover{color:var(--text);background:var(--surface)}
+.btn-wa-nav{background:var(--surface2);color:var(--accent);text-decoration:none;padding:8px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;border:1px solid rgba(0,229,255,.2);transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-wa-nav:hover{background:rgba(0,229,255,.1);border-color:var(--accent);transform:translateY(-1px)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;border:none;background:none;padding:6px}
+.ham span{width:22px;height:2px;background:var(--text2);border-radius:2px;display:block;transition:.3s}
 
 /* HERO */
-.hero{max-width:1320px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(1rem,4vw,3rem) clamp(32px,5vw,64px)}
-.hero-grid{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--white);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:24px}
-.hero-badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%}
-h1.hero-title{font-family:var(--font-head);font-size:clamp(44px,6vw,88px);font-weight:800;line-height:.93;letter-spacing:-3px;color:var(--ink);margin-bottom:20px}
+.hero{max-width:1320px;margin:0 auto;padding:clamp(60px,9vw,110px) clamp(1rem,4vw,3rem) clamp(40px,5vw,72px);position:relative}
+.hero-bg-blobs{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.12}
+.blob1{width:550px;height:550px;background:var(--accent2);top:-120px;left:-80px;animation:blobF 9s ease-in-out infinite}
+.blob2{width:480px;height:480px;background:var(--accent);top:80px;right:-100px;animation:blobF 11s ease-in-out infinite reverse}
+.blob3{width:380px;height:380px;background:var(--accent3);bottom:0;left:35%;animation:blobF 13s ease-in-out infinite 2s}
+@keyframes blobF{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-18px) scale(1.06)}66%{transform:translate(-18px,12px) scale(.96)}}
+.hero-grid{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,.08);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px 6px 8px;border-radius:999px;margin-bottom:24px;border:1px solid rgba(0,229,255,.2);animation:fadeUp .8s var(--ease) .2s both}
+.hero-badge-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:blink 2s infinite}
+h1.hero-title{font-family:var(--font-head);font-size:clamp(44px,6.5vw,92px);font-weight:800;line-height:.93;letter-spacing:-3px;color:var(--text);margin-bottom:22px;animation:fadeUp .9s var(--ease) .4s both}
 h1.hero-title em{font-style:normal;color:var(--accent)}
-.hero-sub{font-size:17px;color:var(--text2);line-height:1.65;max-width:480px;margin-bottom:36px}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn-fill{background:var(--ink);color:var(--white);border:none;padding:13px 26px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn-fill:hover{background:var(--ink2);transform:translateY(-2px)}
-.btn-fill.red{background:var(--accent)}.btn-fill.red:hover{background:var(--accent2)}
-.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--surface3);padding:13px 26px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn-ghost:hover{border-color:var(--ink);background:var(--surface2)}
-.hero-nums{display:flex;flex-direction:column;gap:20px;align-items:flex-end}
-.hero-num .n{font-family:var(--font-head);font-size:40px;font-weight:800;color:var(--ink);line-height:1;text-align:right}
-.hero-num .l{font-size:12px;color:var(--text3);margin-top:2px;text-align:right}
+.hero-sub{font-size:17px;color:var(--text2);line-height:1.7;max-width:480px;margin-bottom:36px;animation:fadeUp .9s var(--ease) .6s both}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .9s var(--ease) .8s both}
+.btn-fill{background:var(--accent);color:#000;border:none;padding:12px 26px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-fill:hover{background:#fff;transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,229,255,.25)}
+.btn-fill.red{background:var(--accent3);color:#fff}.btn-fill.red:hover{background:#ff6b3d;box-shadow:0 16px 36px rgba(255,77,28,.3)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2);padding:12px 26px;border-radius:var(--radius-sm);font-size:14px;font-weight:400;font-family:var(--font-body);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{background:var(--surface);transform:translateY(-2px)}
+.hero-nums{display:flex;flex-direction:column;gap:22px;align-items:flex-end;animation:fadeUp .9s var(--ease) 1s both}
+.hero-num .n{font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--text);line-height:1;text-align:right}
+.hero-num .l{font-size:11px;color:var(--text3);margin-top:3px;text-align:right;text-transform:uppercase;letter-spacing:.06em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 
 /* MARQUEE */
-.marquee{background:var(--ink);padding:14px 0;overflow:hidden}
-.marquee-track{display:flex;gap:48px;animation:scroll 28s linear infinite;width:max-content}
+.marquee{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;overflow:hidden}
+.marquee-track{display:flex;gap:48px;animation:scroll 30s linear infinite;width:max-content}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.marquee-item{font-size:13px;font-weight:500;color:rgba(255,255,255,.7);white-space:nowrap;display:flex;align-items:center;gap:12px}
-.marquee-item::after{content:'◆';color:var(--accent);font-size:8px}
+.marquee-item{font-size:13px;font-weight:500;color:var(--text3);white-space:nowrap;display:flex;align-items:center;gap:12px}
+.marquee-item::after{content:'◆';color:var(--accent);font-size:7px;opacity:.6}
 
 /* CATALOG */
-.catalog{max-width:1320px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(1rem,4vw,3rem)}
-.section-head{margin-bottom:32px}
-.section-head h2{font-family:var(--font-head);font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:6px}
+.catalog{max-width:1320px;margin:0 auto;padding:clamp(48px,6vw,80px) clamp(1rem,4vw,3rem)}
+.section-head{margin-bottom:28px}
+.section-label{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.section-label::before{content:'';width:18px;height:1px;background:var(--accent)}
+.section-head h2{font-family:var(--font-head);font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;line-height:1;margin-bottom:6px;color:var(--text)}
 .section-head p{color:var(--text3);font-size:14px}
 .filter-wrap{overflow-x:auto;padding-bottom:2px;margin-bottom:40px;-webkit-overflow-scrolling:touch}
+.filter-wrap::-webkit-scrollbar{height:0}
 .filters{display:flex;gap:8px;width:max-content;list-style:none}
-.ftab{background:var(--surface2);border:1.5px solid transparent;color:var(--text2);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .2s;white-space:nowrap}
-.ftab:hover{background:var(--surface3);color:var(--text)}
-.ftab.on{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.ftab{background:var(--surface);border:1px solid var(--border2);color:var(--text2);padding:8px 18px;border-radius:999px;font-size:13px;font-weight:400;font-family:var(--font-body);cursor:pointer;transition:all .25s;white-space:nowrap}
+.ftab:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.05)}
+.ftab.on{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
 
 /* CATEGORY */
-.cat{margin-bottom:52px}
+.cat{margin-bottom:56px}
 .cat.hide{display:none}
-.cat-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--surface3)}
-.cat-ico{width:38px;height:38px;background:var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.cat-title{font-family:var(--font-head);font-size:20px;font-weight:700;letter-spacing:-.5px}
-.cat-count{margin-left:auto;font-size:12px;font-weight:600;color:var(--text3);background:var(--surface2);padding:4px 12px;border-radius:999px}
+.cat-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.cat-ico{width:38px;height:38px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cat-title{font-family:var(--font-head);font-size:19px;font-weight:700;letter-spacing:-.4px;color:var(--text)}
+.cat-count{margin-left:auto;font-size:12px;font-weight:500;color:var(--text3);background:var(--surface);border:1px solid var(--border);padding:4px 12px;border-radius:999px}
 
-/* GRID */
+/* GRID & CARD */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-
-/* CARD */
-.card{background:var(--white);border:1px solid var(--surface3);border-radius:var(--radius);overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .25s,box-shadow .25s;cursor:pointer;display:flex;flex-direction:column}
-.card:hover{transform:translateY(-6px);border-color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
-.card-thumb{position:relative;padding-top:58%;overflow:hidden;background:var(--surface2)}
-.card-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.card:hover .card-thumb img{transform:scale(1.06)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s;opacity:0;transform:translateY(36px);position:relative}
+.card.visible{opacity:1;transform:translateY(0)}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.04),transparent 55%);opacity:0;transition:opacity .35s;pointer-events:none;z-index:1}
+.card:hover{transform:translateY(-7px) scale(1.01);border-color:rgba(0,229,255,.25);box-shadow:0 28px 56px rgba(0,0,0,.5),0 0 0 1px rgba(0,229,255,.08)}
+.card:hover::before{opacity:1}
+.card-thumb{position:relative;padding-top:58%;overflow:hidden;background:var(--bg3)}
+.card-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.card:hover .card-thumb img{transform:scale(1.08)}
 .thumb-fallback{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px}
-.tag{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:999px;font-family:var(--font-body)}
-.tag.dark{background:var(--ink);color:var(--white)}
-.tag.red{background:var(--accent);color:var(--white)}
-.tag.gold{background:var(--gold);color:var(--white)}
-.card-body{padding:14px;flex:1;display:flex;flex-direction:column}
-.card-name{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;line-height:1.3}
+.tag{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;font-family:var(--font-body);backdrop-filter:blur(8px)}
+.tag.dark{background:rgba(8,12,16,.8);color:var(--text2);border:1px solid var(--border2)}
+.tag.red{background:var(--accent3);color:#fff}
+.tag.gold{background:var(--gold);color:#000}
+.card-body{padding:14px;flex:1;display:flex;flex-direction:column;position:relative;z-index:2}
+.card-name{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
 .card-hint{font-size:12px;color:var(--text3);flex:1;margin-bottom:12px;line-height:1.4}
 .card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.card-price{font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--ink)}
-.card-price small{font-family:var(--font-body);font-size:11px;font-weight:500;color:var(--text3)}
-.btn-detail{background:var(--surface2);color:var(--ink);border:1px solid var(--surface3);padding:7px 13px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .2s;white-space:nowrap}
-.btn-detail:hover{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.card-price{font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--accent)}
+.card-price small{font-family:var(--font-body);font-size:11px;font-weight:400;color:var(--text3)}
+.btn-detail{background:var(--surface2);color:var(--text);border:1px solid var(--border2);padding:7px 13px;border-radius:var(--radius-sm);font-size:12px;font-weight:500;font-family:var(--font-body);cursor:pointer;transition:all .22s;white-space:nowrap}
+.btn-detail:hover{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
 
 /* CONTACT */
-.contact{background:var(--ink);padding:clamp(48px,7vw,96px) clamp(1rem,4vw,3rem)}
+.contact{background:var(--bg2);border-top:1px solid var(--border);padding:clamp(52px,7vw,100px) clamp(1rem,4vw,3rem)}
 .contact-inner{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.contact h2{font-family:var(--font-head);font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-2px;line-height:1;color:var(--white);margin-bottom:16px}
-.contact p{color:rgba(255,255,255,.5);font-size:16px;line-height:1.7;margin-bottom:32px}
+.contact h2{font-family:var(--font-head);font-size:clamp(30px,4vw,50px);font-weight:800;letter-spacing:-2px;line-height:1.05;color:var(--text);margin-bottom:16px}
+.contact h2 span{color:var(--accent)}
+.contact-left p{color:var(--text2);font-size:16px;line-height:1.75;margin-bottom:32px}
 .contact-cards{display:flex;flex-direction:column;gap:12px}
-.ccard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--white);transition:all .25s}
-.ccard:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);transform:translateX(5px)}
-.ccard-ico{width:48px;height:48px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.ccard strong{display:block;font-size:15px;font-weight:700;margin-bottom:3px}
-.ccard span{font-size:13px;color:rgba(255,255,255,.4)}
+.ccard{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--text);transition:all .25s}
+.ccard:hover{background:var(--surface2);border-color:rgba(0,229,255,.25);transform:translateX(5px)}
+.ccard-ico{width:46px;height:46px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ccard strong{display:block;font-size:15px;font-weight:600;margin-bottom:3px;color:var(--text)}
+.ccard span{font-size:13px;color:var(--text3)}
 
 /* FOOTER */
-footer{background:var(--ink2);border-top:1px solid rgba(255,255,255,.05);padding:20px clamp(1rem,4vw,3rem)}
+footer{background:var(--bg);border-top:1px solid var(--border);padding:24px clamp(1rem,4vw,3rem)}
 .foot-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-footer p{font-size:13px;color:rgba(255,255,255,.3)}
-footer a{color:rgba(255,255,255,.5);text-decoration:none}
-footer a:hover{color:var(--white)}
+.foot-logo{font-family:var(--font-head);font-size:1.1rem;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+.foot-logo span{color:var(--accent)}
+footer p{font-size:13px;color:var(--text3)}
+footer a{color:var(--text2);text-decoration:none;transition:.2s}
+footer a:hover{color:var(--accent)}
 
 /* MODAL */
-.overlay{display:none;position:fixed;inset:0;z-index:999;background:rgba(13,13,18,.82);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px}
-.overlay.on{display:flex;animation:fin .2s ease}
-@keyframes fin{from{opacity:0}to{opacity:1}}
-.modal{background:var(--white);border-radius:20px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
-@keyframes pop{from{transform:scale(.9) translateY(24px);opacity:0}to{transform:none;opacity:1}}
-.modal-x{position:absolute;top:14px;right:14px;z-index:10;width:34px;height:34px;border-radius:50%;background:var(--surface2);border:1px solid var(--surface3);color:var(--text2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--font-body);line-height:1}
-.modal-x:hover{background:var(--ink);color:var(--white)}
-.modal-thumb{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:20px 20px 0 0;background:var(--surface2);position:relative}
+.overlay{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.85);backdrop-filter:blur(18px);align-items:center;justify-content:center;padding:20px}
+.overlay.on{display:flex;animation:fadein .3s var(--ease)}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:22px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:popIn .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(.88) translateY(28px);opacity:0}to{transform:none;opacity:1}}
+.modal-x{position:absolute;top:14px;right:14px;z-index:10;width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--font-body);line-height:1}
+.modal-x:hover{background:var(--surface2);color:var(--text)}
+.modal-thumb{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:22px 22px 0 0;background:var(--bg3);position:relative}
 .modal-thumb img{width:100%;height:100%;object-fit:cover}
 .modal-thumb-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:72px}
 .modal-body{padding:24px 28px 28px}
 .modal-cat{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}
-.modal-name{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--ink);margin-bottom:10px;line-height:1.1}
-.modal-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
-.modal-feats{display:flex;flex-direction:column;gap:7px;margin-bottom:24px}
+.modal-name{font-family:var(--font-head);font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--text);margin-bottom:10px;line-height:1.1}
+.modal-desc{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:20px}
+.modal-feats{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
 .mfeat{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2)}
-.mfeat::before{content:'';width:5px;height:5px;background:#22c55e;border-radius:50%;flex-shrink:0}
-.modal-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.mprice-label{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:2px}
-.mprice{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-1px}
-.btn-whatsapp{background:#25d366;color:var(--white);border:none;padding:13px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;text-decoration:none}
-.btn-whatsapp:hover{background:#1fb855;transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,211,102,.35)}
+.mfeat::before{content:'';width:5px;height:5px;background:var(--accent);border-radius:50%;flex-shrink:0}
+.modal-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:18px;border-top:1px solid var(--border)}
+.mprice-label{font-size:11px;color:var(--text3);font-weight:500;margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em}
+.mprice{font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--accent);letter-spacing:-1px}
+.btn-whatsapp{background:#25d366;color:#fff;border:none;padding:12px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;text-decoration:none}
+.btn-whatsapp:hover{background:#1fb855;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.35)}
+
+/* WA FLOAT */
+#wa-float{position:fixed;bottom:26px;right:26px;z-index:500;width:56px;height:56px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,.45);text-decoration:none;animation:waPop .6s var(--ease) 1.5s both;transition:transform .3s,box-shadow .3s}
+#wa-float:hover{transform:scale(1.1) translateY(-3px);box-shadow:0 14px 36px rgba(37,211,102,.55)}
+@keyframes waPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+#wa-float::before{content:'';position:absolute;inset:-4px;border:2px solid rgba(37,211,102,.4);border-radius:50%;animation:waPulse 2.5s ease infinite}
+@keyframes waPulse{0%,100%{transform:scale(1);opacity:1}60%{transform:scale(1.3);opacity:0}}
+.wa-tip{position:absolute;right:66px;top:50%;transform:translateY(-50%);white-space:nowrap;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:7px 14px;font-size:.8rem;color:var(--text);opacity:0;pointer-events:none;transition:opacity .2s;font-family:var(--font-body)}
+#wa-float:hover .wa-tip{opacity:1}
 
 /* SCROLL TOP */
-#stb{position:fixed;bottom:24px;right:24px;z-index:500;width:44px;height:44px;border-radius:50%;background:var(--ink);border:none;color:var(--white);font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+#stb{position:fixed;bottom:26px;left:26px;z-index:500;width:42px;height:42px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .3s}
 #stb.on{display:flex}
-#stb:hover{background:var(--ink2);transform:translateY(-3px)}
+#stb:hover{background:var(--surface3);color:var(--text);transform:translateY(-2px)}
 
 /* RESPONSIVE */
 @media(max-width:960px){
   .hero-grid{grid-template-columns:1fr}
-  .hero-nums{flex-direction:row;align-items:flex-start}
+  .hero-nums{flex-direction:row;gap:32px}
   .hero-num .n,.hero-num .l{text-align:left}
   .contact-inner{grid-template-columns:1fr;gap:40px}
   .nav-links,.btn-wa-nav{display:none}
   .ham{display:flex}
+  nav.open .nav-links{display:flex;flex-direction:column;position:fixed;inset:0;top:66px;background:var(--bg);padding:2rem 5%;border-top:1px solid var(--border);z-index:999;gap:4px}
+  nav.open .nav-links a{padding:12px 16px;font-size:1rem}
 }
 @media(max-width:600px){
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
@@ -169,10 +203,13 @@ footer a:hover{color:var(--white)}
 </head>
 <body>
 
-<nav>
+<nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="logo"><span class="logo-dot"></span>Smart<span class="logo-accent">Store</span></a>
-    <ul class="nav-links">
+    <a href="#" class="logo">
+      <div class="logo-icon">⚡</div>
+      Smart<span class="logo-accent">Store</span><span class="logo-dot"></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#">Inicio</a></li>
       <li><a href="#catalog">Productos</a></li>
       <li><a href="#catalog">Categorías</a></li>
@@ -180,14 +217,17 @@ footer a:hover{color:var(--white)}
       <li><a href="#contact">Contacto</a></li>
     </ul>
     <a href="https://wa.me/573215045684" target="_blank" class="btn-wa-nav">💬 WhatsApp</a>
-    <button class="ham"><span></span><span></span><span></span></button>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <section class="hero">
+  <div class="hero-bg-blobs">
+    <div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div>
+  </div>
   <div class="hero-grid">
     <div>
-      <div class="hero-badge">✦ Servicios digitales premium</div>
+      <div class="hero-badge"><div class="hero-badge-dot"></div> Servicios digitales premium · Colombia</div>
       <h1 class="hero-title">Tu tienda<br><em>digital</em><br>favorita</h1>
       <p class="hero-sub">Streaming, IA, software y tecnología al mejor precio. Entrega inmediata y soporte personalizado 24/7.</p>
       <div class="hero-actions">
@@ -212,7 +252,8 @@ footer a:hover{color:var(--white)}
 
 <section class="catalog" id="catalog">
   <div class="section-head">
-    <h2>Catálogo</h2>
+    <div class="section-label">Catálogo completo</div>
+    <h2>Todos los productos</h2>
     <p>Filtra por categoría · todos los precios en COP</p>
   </div>
   <div class="filter-wrap">
@@ -236,25 +277,25 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="netflix">
     <div class="cat-head"><div class="cat-ico">🎬</div><div class="cat-title">Netflix</div><div class="cat-count">5 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Netflix pantalla 33 días','14.000 COP','Netflix','Pantalla individual por 33 días. Todo el catálogo Netflix en tu dispositivo favorito.','netflix.jpg','',['33 días de acceso garantizado','Pantalla individual exclusiva','Entrega inmediata','Compatible con Smart TV y móvil'])">
+      <div class="card" onclick="openM('Netflix pantalla 33 días','14.000 COP','Netflix','Pantalla individual por 33 días. Todo el catálogo Netflix en tu dispositivo favorito.','netflix.jpg','🎬',['33 días de acceso garantizado','Pantalla individual exclusiva','Entrega inmediata','Compatible con Smart TV y móvil'])">
         <div class="card-thumb"><img src="netflix.jpg" alt="Netflix" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Streaming</span></div>
-        <div class="card-body"><div class="card-name">Netflix pantalla 33 días</div><div class="card-hint">Pantalla individual · 33 días</div><div class="card-foot"><div class="card-price">14.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Netflix pantalla 33 días</div><div class="card-hint">Pantalla individual · 33 días</div><div class="card-foot"><div class="card-price">14.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Netflix pantalla 27 días','12.000 COP','Netflix','Pantalla individual por 27 días. Disfruta todo el catálogo Netflix de forma personal y económica.','netflix.jpg','',['27 días de acceso','Pantalla individual','Todo el catálogo Netflix','Acceso inmediato'])">
+      <div class="card" onclick="openM('Netflix pantalla 27 días','12.000 COP','Netflix','Pantalla individual por 27 días. Disfruta todo el catálogo Netflix de forma personal y económica.','netflix.jpg','🎬',['27 días de acceso','Pantalla individual','Todo el catálogo Netflix','Acceso inmediato'])">
         <div class="card-thumb"><img src="netflix.jpg" alt="Netflix" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Oferta</span></div>
-        <div class="card-body"><div class="card-name">Netflix pantalla 27 días</div><div class="card-hint">Pantalla individual · 27 días</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Netflix pantalla 27 días</div><div class="card-hint">Pantalla individual · 27 días</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Netflix internacional','47.000 COP','Netflix','Cuenta Netflix internacional genérica completa. Múltiples perfiles, Ultra HD y catálogo internacional.','netflix.jpg','',['Cuenta completa internacional','Múltiples perfiles','Ultra HD disponible','Mayor catálogo de contenido'])">
+      <div class="card" onclick="openM('Netflix internacional','47.000 COP','Netflix','Cuenta Netflix internacional genérica completa. Múltiples perfiles, Ultra HD y catálogo internacional.','netflix.jpg','🎬',['Cuenta completa internacional','Múltiples perfiles','Ultra HD disponible','Mayor catálogo de contenido'])">
         <div class="card-thumb"><img src="netflix.jpg" alt="Netflix" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Premium</span></div>
-        <div class="card-body"><div class="card-name">Netflix internacional</div><div class="card-hint">Cuenta completa internacional genérica</div><div class="card-foot"><div class="card-price">47.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Netflix internacional</div><div class="card-hint">Cuenta completa internacional genérica</div><div class="card-foot"><div class="card-price">47.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Netflix internacional pantalla','12.000 COP','Netflix','Pantalla individual catálogo internacional. Acceso por 27–32 días con contenido de todo el mundo.','netflix.jpg','',['27–32 días de acceso','Pantalla individual','Catálogo internacional','Entrega inmediata'])">
+      <div class="card" onclick="openM('Netflix internacional pantalla','12.000 COP','Netflix','Pantalla individual catálogo internacional. Acceso por 27–32 días con contenido de todo el mundo.','netflix.jpg','🎬',['27–32 días de acceso','Pantalla individual','Catálogo internacional','Entrega inmediata'])">
         <div class="card-thumb"><img src="netflix.jpg" alt="Netflix" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Netflix internacional pantalla</div><div class="card-hint">Pantalla genérica internacional · 27–32 días</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Netflix internacional pantalla</div><div class="card-hint">Pantalla genérica internacional · 27–32 días</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Netflix pantalla','10.000 COP','Netflix','La opción más económica. Pantalla genérica individual por 27–32 días de acceso a Netflix.','netflix.jpg','',['27–32 días de acceso','Pantalla genérica','Opción más económica','Acceso rápido'])">
+      <div class="card" onclick="openM('Netflix pantalla','10.000 COP','Netflix','La opción más económica. Pantalla genérica individual por 27–32 días de acceso a Netflix.','netflix.jpg','🎬',['27–32 días de acceso','Pantalla genérica','Opción más económica','Acceso rápido'])">
         <div class="card-thumb"><img src="netflix.jpg" alt="Netflix" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Económico</span></div>
-        <div class="card-body"><div class="card-name">Netflix pantalla</div><div class="card-hint">Pantalla genérica · opción económica</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Netflix pantalla</div><div class="card-hint">Pantalla genérica · opción económica</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -263,25 +304,25 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="hbo">
     <div class="cat-head"><div class="cat-ico">📺</div><div class="cat-title">HBO Max</div><div class="cat-count">5 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Max platino original completa','23.000 COP','HBO Max','Cuenta Max platino completa y original. Contenido HBO exclusivo, series y películas premium sin límites.','max.jpg','',['Cuenta original completa','Plan platino premium','Contenido HBO exclusivo','Acceso total inmediato'])">
+      <div class="card" onclick="openM('Max platino original completa','23.000 COP','HBO Max','Cuenta Max platino completa y original. Contenido HBO exclusivo, series y películas premium sin límites.','max.jpg','📺',['Cuenta original completa','Plan platino premium','Contenido HBO exclusivo','Acceso total inmediato'])">
         <div class="card-thumb"><img src="max.jpg" alt="HBO Max" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Premium</span></div>
-        <div class="card-body"><div class="card-name">Max platino original completa</div><div class="card-hint">Cuenta completa original · plan platino</div><div class="card-foot"><div class="card-price">23.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Max platino original completa</div><div class="card-hint">Cuenta completa original · plan platino</div><div class="card-foot"><div class="card-price">23.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Max platino original pantalla','8.000 COP','HBO Max','Pantalla individual con plan platino original. Todo el catálogo HBO Max en tu dispositivo personal.','max.jpg','',['Pantalla individual','Plan platino original','Catálogo HBO completo','Precio accesible'])">
+      <div class="card" onclick="openM('Max platino original pantalla','8.000 COP','HBO Max','Pantalla individual con plan platino original. Todo el catálogo HBO Max en tu dispositivo personal.','max.jpg','📺',['Pantalla individual','Plan platino original','Catálogo HBO completo','Precio accesible'])">
         <div class="card-thumb"><img src="max.jpg" alt="HBO Max" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Max platino original pantalla</div><div class="card-hint">Pantalla platino original</div><div class="card-foot"><div class="card-price">8.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Max platino original pantalla</div><div class="card-hint">Pantalla platino original</div><div class="card-foot"><div class="card-price">8.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Max platino completa','16.000 COP','HBO Max','Cuenta Max platino completa genérica. Acceso total con todos los beneficios del plan platino.','max.jpg','',['Cuenta completa platino','Genérica accesible','Todo el catálogo Max','Acceso inmediato'])">
+      <div class="card" onclick="openM('Max platino completa','16.000 COP','HBO Max','Cuenta Max platino completa genérica. Acceso total con todos los beneficios del plan platino.','max.jpg','📺',['Cuenta completa platino','Genérica accesible','Todo el catálogo Max','Acceso inmediato'])">
         <div class="card-thumb"><img src="max.jpg" alt="HBO Max" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Max platino completa</div><div class="card-hint">Cuenta platino completa genérica</div><div class="card-foot"><div class="card-price">16.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Max platino completa</div><div class="card-hint">Cuenta platino completa genérica</div><div class="card-foot"><div class="card-price">16.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Max pantalla','6.000 COP','HBO Max','Pantalla individual genérica Max. La opción más económica para disfrutar todo el contenido HBO Max.','max.jpg','',['Pantalla individual genérica','Plan platino incluido','Opción más económica','Entrega rápida'])">
+      <div class="card" onclick="openM('Max pantalla','6.000 COP','HBO Max','Pantalla individual genérica Max. La opción más económica para disfrutar todo el contenido HBO Max.','max.jpg','📺',['Pantalla individual genérica','Plan platino incluido','Opción más económica','Entrega rápida'])">
         <div class="card-thumb"><img src="max.jpg" alt="HBO Max" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Económico</span></div>
-        <div class="card-body"><div class="card-name">Max pantalla</div><div class="card-hint">Pantalla genérica platino</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Max pantalla</div><div class="card-hint">Pantalla genérica platino</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Max completa','12.000 COP','HBO Max','Cuenta Max completa genérica. Acceso total a toda la plataforma HBO Max con todos sus contenidos y perfiles.','max.jpg','',['Cuenta completa genérica','Todo el catálogo HBO Max','Precio equilibrado','Acceso inmediato'])">
+      <div class="card" onclick="openM('Max completa','12.000 COP','HBO Max','Cuenta Max completa genérica. Acceso total a toda la plataforma HBO Max con todos sus contenidos.','max.jpg','📺',['Cuenta completa genérica','Todo el catálogo HBO Max','Precio equilibrado','Acceso inmediato'])">
         <div class="card-thumb"><img src="max.jpg" alt="HBO Max" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Max completa</div><div class="card-hint">Cuenta completa genérica</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Max completa</div><div class="card-hint">Cuenta completa genérica</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -290,21 +331,21 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="amazon">
     <div class="cat-head"><div class="cat-ico">📦</div><div class="cat-title">Amazon Prime</div><div class="cat-count">4 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Amazon Prime original completa','17.500 COP','Amazon Prime','Cuenta Amazon Prime original completa. Prime Video, Music y todos los beneficios Prime incluidos.','amazon.jpg','',['Cuenta original completa','Prime Video + Music','Todos los beneficios Prime','Entrega inmediata'])">
+      <div class="card" onclick="openM('Amazon Prime original completa','17.500 COP','Amazon Prime','Cuenta Amazon Prime original completa. Prime Video, Music y todos los beneficios Prime incluidos.','amazon.jpg','📦',['Cuenta original completa','Prime Video + Music','Todos los beneficios Prime','Entrega inmediata'])">
         <div class="card-thumb"><img src="amazon.jpg" alt="Amazon Prime" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Original</span></div>
-        <div class="card-body"><div class="card-name">Amazon Prime original completa</div><div class="card-hint">Cuenta original con todos los beneficios</div><div class="card-foot"><div class="card-price">17.500 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Amazon Prime original completa</div><div class="card-hint">Cuenta original con todos los beneficios</div><div class="card-foot"><div class="card-price">17.500 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Amazon Prime original pantalla','8.000 COP','Amazon Prime','Pantalla individual Amazon Prime con cuenta original. Acceso a Prime Video para uso personal exclusivo.','amazon.jpg','',['Pantalla individual','Cuenta original','Prime Video acceso','Entrega inmediata'])">
+      <div class="card" onclick="openM('Amazon Prime original pantalla','8.000 COP','Amazon Prime','Pantalla individual Amazon Prime con cuenta original. Acceso a Prime Video para uso personal.','amazon.jpg','📦',['Pantalla individual','Cuenta original','Prime Video acceso','Entrega inmediata'])">
         <div class="card-thumb"><img src="amazon.jpg" alt="Amazon Prime" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Amazon Prime original pantalla</div><div class="card-hint">Pantalla individual original</div><div class="card-foot"><div class="card-price">8.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Amazon Prime original pantalla</div><div class="card-hint">Pantalla individual original</div><div class="card-foot"><div class="card-price">8.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Amazon Prime completa (genérica)','13.000 COP','Amazon Prime','Cuenta Amazon Prime completa genérica. Acceso total a Prime Video y contenido exclusivo Amazon.','amazon.jpg','',['Cuenta completa genérica','Prime Video acceso','Contenido exclusivo','Precio accesible'])">
+      <div class="card" onclick="openM('Amazon Prime completa (genérica)','13.000 COP','Amazon Prime','Cuenta Amazon Prime completa genérica. Acceso total a Prime Video y contenido exclusivo Amazon.','amazon.jpg','📦',['Cuenta completa genérica','Prime Video acceso','Contenido exclusivo','Precio accesible'])">
         <div class="card-thumb"><img src="amazon.jpg" alt="Amazon Prime" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Amazon Prime completa (genérica)</div><div class="card-hint">Cuenta completa genérica</div><div class="card-foot"><div class="card-price">13.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Amazon Prime completa (genérica)</div><div class="card-hint">Cuenta completa genérica</div><div class="card-foot"><div class="card-price">13.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Amazon Prime pantalla genérica','4.000 COP','Amazon Prime','La opción más económica de Amazon Prime. Pantalla individual genérica para disfrutar Prime Video.','amazon.jpg','',['Pantalla individual genérica','Opción más económica','Prime Video acceso','Entrega rápida'])">
+      <div class="card" onclick="openM('Amazon Prime pantalla genérica','4.000 COP','Amazon Prime','La opción más económica de Amazon Prime. Pantalla individual genérica para disfrutar Prime Video.','amazon.jpg','📦',['Pantalla individual genérica','Opción más económica','Prime Video acceso','Entrega rápida'])">
         <div class="card-thumb"><img src="amazon.jpg" alt="Amazon Prime" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Económico</span></div>
-        <div class="card-body"><div class="card-name">Amazon Prime pantalla genérica</div><div class="card-hint">La opción más accesible de Amazon</div><div class="card-foot"><div class="card-price">4.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Amazon Prime pantalla genérica</div><div class="card-hint">La opción más accesible de Amazon</div><div class="card-foot"><div class="card-price">4.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -313,17 +354,17 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="spotify">
     <div class="cat-head"><div class="cat-ico">🎧</div><div class="cat-title">Spotify</div><div class="cat-count">3 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Spotify 1 mes','10.000 COP','Spotify','Spotify Premium por 1 mes. Sin anuncios, descarga canciones y escucha offline en cualquier dispositivo.','spotify.jpg','',['1 mes Spotify Premium','Sin anuncios ni pausas','Descargas offline incluidas','Calidad de audio alta'])">
+      <div class="card" onclick="openM('Spotify 1 mes','10.000 COP','Spotify','Spotify Premium por 1 mes. Sin anuncios, descarga canciones y escucha offline en cualquier dispositivo.','spotify.jpg','🎧',['1 mes Spotify Premium','Sin anuncios ni pausas','Descargas offline incluidas','Calidad de audio alta'])">
         <div class="card-thumb"><img src="spotify.jpg" alt="Spotify" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Spotify 1 mes</div><div class="card-hint">Premium sin anuncios · 1 mes</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Spotify 1 mes</div><div class="card-hint">Premium sin anuncios · 1 mes</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Spotify 2 meses','18.000 COP','Spotify','Spotify Premium por 2 meses. Más tiempo de música sin límites con mejor precio por mes.','spotify.jpg','',['2 meses Premium','Sin anuncios ni cortes','Mejor precio por mes','Descargas offline ilimitadas'])">
+      <div class="card" onclick="openM('Spotify 2 meses','18.000 COP','Spotify','Spotify Premium por 2 meses. Más tiempo de música sin límites con mejor precio por mes.','spotify.jpg','🎧',['2 meses Premium','Sin anuncios ni cortes','Mejor precio por mes','Descargas offline ilimitadas'])">
         <div class="card-thumb"><img src="spotify.jpg" alt="Spotify" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Popular</span></div>
-        <div class="card-body"><div class="card-name">Spotify 2 meses</div><div class="card-hint">Premium · 2 meses completos</div><div class="card-foot"><div class="card-price">18.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Spotify 2 meses</div><div class="card-hint">Premium · 2 meses completos</div><div class="card-foot"><div class="card-price">18.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Spotify 3 meses','23.500 COP','Spotify','Spotify Premium por 3 meses. Mejor relación precio-duración, disfruta todo el trimestre sin interrupciones.','spotify.jpg','',['3 meses Premium','Mayor ahorro por mes','Sin anuncios totales','Descargas ilimitadas'])">
+      <div class="card" onclick="openM('Spotify 3 meses','23.500 COP','Spotify','Spotify Premium por 3 meses. Mejor relación precio-duración, disfruta todo el trimestre sin interrupciones.','spotify.jpg','🎧',['3 meses Premium','Mayor ahorro por mes','Sin anuncios totales','Descargas ilimitadas'])">
         <div class="card-thumb"><img src="spotify.jpg" alt="Spotify" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Mejor valor</span></div>
-        <div class="card-body"><div class="card-name">Spotify 3 meses</div><div class="card-hint">Máximo ahorro · 3 meses</div><div class="card-foot"><div class="card-price">23.500 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Spotify 3 meses</div><div class="card-hint">Máximo ahorro · 3 meses</div><div class="card-foot"><div class="card-price">23.500 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -332,25 +373,25 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="disney">
     <div class="cat-head"><div class="cat-ico">🏰</div><div class="cat-title">Disney+</div><div class="cat-count">5 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Disney premium completa (genérica)','33.000 COP','Disney+','Cuenta Disney+ premium completa genérica. Marvel, Star Wars, National Geographic y todo el universo Disney.','disney.jpg','',['Cuenta completa premium','Marvel + Star Wars + NatGeo','Sin anuncios premium','Descargas disponibles'])">
+      <div class="card" onclick="openM('Disney premium completa (genérica)','33.000 COP','Disney+','Cuenta Disney+ premium completa genérica. Marvel, Star Wars, National Geographic y todo el universo Disney.','disney.jpg','🏰',['Cuenta completa premium','Marvel + Star Wars + NatGeo','Sin anuncios premium','Descargas disponibles'])">
         <div class="card-thumb"><img src="disney.jpg" alt="Disney+" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Premium</span></div>
-        <div class="card-body"><div class="card-name">Disney premium completa (genérica)</div><div class="card-hint">Cuenta premium completa · Marvel, Star Wars</div><div class="card-foot"><div class="card-price">33.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Disney premium completa (genérica)</div><div class="card-hint">Cuenta premium completa · Marvel, Star Wars</div><div class="card-foot"><div class="card-price">33.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Disney premium original pantalla','10.000 COP','Disney+','Pantalla individual Disney+ premium con cuenta original. Todo el catálogo Disney premium en tu dispositivo.','disney.jpg','',['Pantalla individual premium','Cuenta original','Catálogo Disney completo','Entrega inmediata'])">
+      <div class="card" onclick="openM('Disney premium original pantalla','10.000 COP','Disney+','Pantalla individual Disney+ premium con cuenta original.','disney.jpg','🏰',['Pantalla individual premium','Cuenta original','Catálogo Disney completo','Entrega inmediata'])">
         <div class="card-thumb"><img src="disney.jpg" alt="Disney+" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Disney premium original pantalla</div><div class="card-hint">Pantalla premium original</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Disney premium original pantalla</div><div class="card-hint">Pantalla premium original</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Disney premium pantalla genérica','7.500 COP','Disney+','Pantalla Disney+ premium genérica. Opción económica para acceder al plan premium de Disney+.','disney.jpg','',['Pantalla genérica premium','Plan premium accesible','Opción económica','Acceso rápido'])">
+      <div class="card" onclick="openM('Disney premium pantalla genérica','7.500 COP','Disney+','Pantalla Disney+ premium genérica. Opción económica para acceder al plan premium de Disney+.','disney.jpg','🏰',['Pantalla genérica premium','Plan premium accesible','Opción económica','Acceso rápido'])">
         <div class="card-thumb"><img src="disney.jpg" alt="Disney+" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Económico</span></div>
-        <div class="card-body"><div class="card-name">Disney premium pantalla genérica</div><div class="card-hint">Pantalla premium genérica</div><div class="card-foot"><div class="card-price">7.500 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Disney premium pantalla genérica</div><div class="card-hint">Pantalla premium genérica</div><div class="card-foot"><div class="card-price">7.500 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Disney estándar completa (30–45 días)','15.000 COP','Disney+','Cuenta Disney+ estándar completa por 30 a 45 días. Acceso a todo el catálogo en plan estándar.','disney.jpg','',['Cuenta estándar completa','30 a 45 días de acceso','Todo el catálogo Disney','Múltiples dispositivos'])">
+      <div class="card" onclick="openM('Disney estándar completa (30–45 días)','15.000 COP','Disney+','Cuenta Disney+ estándar completa por 30 a 45 días.','disney.jpg','🏰',['Cuenta estándar completa','30 a 45 días de acceso','Todo el catálogo Disney','Múltiples dispositivos'])">
         <div class="card-thumb"><img src="disney.jpg" alt="Disney+" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Disney estándar completa (30–45 días)</div><div class="card-hint">Cuenta estándar · hasta 45 días</div><div class="card-foot"><div class="card-price">15.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Disney estándar completa (30–45 días)</div><div class="card-hint">Cuenta estándar · hasta 45 días</div><div class="card-foot"><div class="card-price">15.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Disney estándar original pantalla (30–45 días)','6.000 COP','Disney+','La opción más accesible de Disney+. Pantalla individual estándar original por 30 a 45 días.','disney.jpg','',['Pantalla individual original','30 a 45 días','Plan estándar','Mejor precio Disney'])">
+      <div class="card" onclick="openM('Disney estándar original pantalla (30–45 días)','6.000 COP','Disney+','La opción más accesible de Disney+. Pantalla individual estándar original por 30 a 45 días.','disney.jpg','🏰',['Pantalla individual original','30 a 45 días','Plan estándar','Mejor precio Disney'])">
         <div class="card-thumb"><img src="disney.jpg" alt="Disney+" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Mejor precio</span></div>
-        <div class="card-body"><div class="card-name">Disney estándar original pantalla</div><div class="card-hint">Pantalla original estándar · 30–45 días</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Disney estándar original pantalla</div><div class="card-hint">Pantalla original estándar · 30–45 días</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -359,17 +400,17 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="youtube">
     <div class="cat-head"><div class="cat-ico">▶️</div><div class="cat-title">YouTube Premium</div><div class="cat-count">3 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('YouTube 1 mes (genérico, Android)','6.000 COP','YouTube','YouTube Premium genérico para Android por 1 mes. Sin anuncios y reproducción en segundo plano.','youtube.jpg','',['1 mes sin anuncios','Compatible Android','Reproducción 2do plano','Opción económica'])">
+      <div class="card" onclick="openM('YouTube 1 mes (genérico, Android)','6.000 COP','YouTube','YouTube Premium genérico para Android por 1 mes. Sin anuncios y reproducción en segundo plano.','youtube.jpg','▶️',['1 mes sin anuncios','Compatible Android','Reproducción 2do plano','Opción económica'])">
         <div class="card-thumb"><img src="youtube.jpg" alt="YouTube" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Android</span></div>
-        <div class="card-body"><div class="card-name">YouTube 1 mes (genérico, Android)</div><div class="card-hint">Sin anuncios · Android · 1 mes</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">YouTube 1 mes (genérico, Android)</div><div class="card-hint">Sin anuncios · Android · 1 mes</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('YouTube Premium 1 mes','11.000 COP','YouTube','YouTube Premium por 1 mes. Sin anuncios, YouTube Music incluido y descarga de videos para ver offline.','youtube.jpg','',['1 mes YouTube Premium','YouTube Music incluido','Sin anuncios en todo','Descargas offline'])">
+      <div class="card" onclick="openM('YouTube Premium 1 mes','11.000 COP','YouTube','YouTube Premium por 1 mes. Sin anuncios, YouTube Music incluido y descarga de videos offline.','youtube.jpg','▶️',['1 mes YouTube Premium','YouTube Music incluido','Sin anuncios en todo','Descargas offline'])">
         <div class="card-thumb"><img src="youtube.jpg" alt="YouTube" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Premium</span></div>
-        <div class="card-body"><div class="card-name">YouTube Premium 1 mes</div><div class="card-hint">YouTube Music incluido · 1 mes</div><div class="card-foot"><div class="card-price">11.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">YouTube Premium 1 mes</div><div class="card-hint">YouTube Music incluido · 1 mes</div><div class="card-foot"><div class="card-price">11.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('YouTube Premium x3 meses','26.000 COP','YouTube','YouTube Premium por 3 meses. Mejor opción de ahorro para disfrutar YouTube sin límites todo el trimestre.','youtube.jpg','',['3 meses YouTube Premium','Mayor ahorro por mes','YouTube Music incluido','Sin anuncios totales'])">
+      <div class="card" onclick="openM('YouTube Premium x3 meses','26.000 COP','YouTube','YouTube Premium por 3 meses. Mejor opción de ahorro para disfrutar YouTube sin límites todo el trimestre.','youtube.jpg','▶️',['3 meses YouTube Premium','Mayor ahorro por mes','YouTube Music incluido','Sin anuncios totales'])">
         <div class="card-thumb"><img src="youtube.jpg" alt="YouTube" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Mejor valor</span></div>
-        <div class="card-body"><div class="card-name">YouTube Premium x3 meses</div><div class="card-hint">Máximo ahorro · 3 meses completos</div><div class="card-foot"><div class="card-price">26.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">YouTube Premium x3 meses</div><div class="card-hint">Máximo ahorro · 3 meses completos</div><div class="card-foot"><div class="card-price">26.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -378,13 +419,13 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="paramount">
     <div class="cat-head"><div class="cat-ico">📡</div><div class="cat-title">Paramount+</div><div class="cat-count">2 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Paramount completa genérica','10.000 COP','Paramount+','Cuenta Paramount+ completa genérica. Series exclusivas, películas y contenido deportivo Paramount.','paramount.jpg','',['Cuenta completa genérica','Series exclusivas','Contenido deportivo','Acceso inmediato'])">
-        <div class="card-thumb"><img src="paramount.jpg" alt="Paramount+" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Paramount completa genérica</div><div class="card-hint">Cuenta completa · todo el contenido</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+      <div class="card" onclick="openM('Paramount completa genérica','10.000 COP','Paramount+','Cuenta Paramount+ completa genérica. Series exclusivas, películas y contenido deportivo Paramount.','paramount.jpg','📡',['Cuenta completa genérica','Series exclusivas','Contenido deportivo','Acceso inmediato'])">
+        <div class="card-thumb"><img src="paramount.jpg" alt="Paramount+" onerror="this.style.display='none'"><div class="thumb-fallback">📡</div></div>
+        <div class="card-body"><div class="card-name">Paramount completa genérica</div><div class="card-hint">Cuenta completa · todo el contenido</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Paramount pantalla','5.000 COP','Paramount+','Pantalla individual Paramount+. La opción más accesible para disfrutar el contenido Paramount.','paramount.jpg','',['Pantalla individual','Contenido Paramount','Precio muy accesible','Entrega rápida'])">
-        <div class="card-thumb"><img src="paramount.jpg" alt="Paramount+" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Económico</span></div>
-        <div class="card-body"><div class="card-name">Paramount pantalla</div><div class="card-hint">Pantalla individual accesible</div><div class="card-foot"><div class="card-price">5.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+      <div class="card" onclick="openM('Paramount pantalla','5.000 COP','Paramount+','Pantalla individual Paramount+. La opción más accesible para disfrutar el contenido Paramount.','paramount.jpg','📡',['Pantalla individual','Contenido Paramount','Precio muy accesible','Entrega rápida'])">
+        <div class="card-thumb"><img src="paramount.jpg" alt="Paramount+" onerror="this.style.display='none'"><div class="thumb-fallback">📡</div><span class="tag dark">Económico</span></div>
+        <div class="card-body"><div class="card-name">Paramount pantalla</div><div class="card-hint">Pantalla individual accesible</div><div class="card-foot"><div class="card-price">5.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -393,33 +434,33 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="ia">
     <div class="cat-head"><div class="cat-ico">🤖</div><div class="cat-title">IA & Software</div><div class="cat-count">7 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('ChatGPT a dominio','14.000 COP','IA & Software','ChatGPT Plus vinculado a tu dominio. Usa GPT-4 con todas sus capacidades directamente.','chatgpt.jpg','',['ChatGPT Plus completo','GPT-4 habilitado','Vinculado a tu dominio','Capacidades avanzadas de IA'])">
+      <div class="card" onclick="openM('ChatGPT a dominio','14.000 COP','IA & Software','ChatGPT Plus vinculado a tu dominio. Usa GPT-4 con todas sus capacidades directamente.','chatgpt.jpg','🤖',['ChatGPT Plus completo','GPT-4 habilitado','Vinculado a tu dominio','Capacidades avanzadas de IA'])">
         <div class="card-thumb"><img src="chatgpt.jpg" alt="ChatGPT" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">IA</span></div>
-        <div class="card-body"><div class="card-name">ChatGPT a dominio</div><div class="card-hint">GPT-4 vinculado a tu dominio</div><div class="card-foot"><div class="card-price">14.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">ChatGPT a dominio</div><div class="card-hint">GPT-4 vinculado a tu dominio</div><div class="card-foot"><div class="card-price">14.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('ChatGPT Plus','15.000 COP','IA & Software','ChatGPT Plus con acceso completo a GPT-4, DALL-E y todas las funciones avanzadas de OpenAI.','chatgpt.jpg','',['GPT-4 acceso completo','DALL-E imágenes IA','Análisis de documentos','Plugins disponibles'])">
+      <div class="card" onclick="openM('ChatGPT Plus','15.000 COP','IA & Software','ChatGPT Plus con acceso completo a GPT-4, DALL-E y todas las funciones avanzadas de OpenAI.','chatgpt.jpg','🤖',['GPT-4 acceso completo','DALL-E imágenes IA','Análisis de documentos','Plugins disponibles'])">
         <div class="card-thumb"><img src="chatgpt.jpg" alt="ChatGPT Plus" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Popular</span></div>
-        <div class="card-body"><div class="card-name">ChatGPT Plus</div><div class="card-hint">GPT-4 + DALL-E + funciones avanzadas</div><div class="card-foot"><div class="card-price">15.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">ChatGPT Plus</div><div class="card-hint">GPT-4 + DALL-E + funciones avanzadas</div><div class="card-foot"><div class="card-price">15.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Gemini Pro (5 dispositivos)','21.000 COP','IA & Software','Google Gemini Pro para hasta 5 dispositivos. IA multimodal avanzada con integración Google.','gemini.jpg','',['Hasta 5 dispositivos','Gemini Pro avanzado','IA multimodal Google','Integración servicios Google'])">
+      <div class="card" onclick="openM('Gemini Pro (5 dispositivos)','21.000 COP','IA & Software','Google Gemini Pro para hasta 5 dispositivos. IA multimodal avanzada con integración Google.','gemini.jpg','✨',['Hasta 5 dispositivos','Gemini Pro avanzado','IA multimodal Google','Integración servicios Google'])">
         <div class="card-thumb"><img src="gemini.jpg" alt="Gemini" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Gemini Pro (5 dispositivos)</div><div class="card-hint">IA Google · hasta 5 dispositivos</div><div class="card-foot"><div class="card-price">21.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Gemini Pro (5 dispositivos)</div><div class="card-hint">IA Google · hasta 5 dispositivos</div><div class="card-foot"><div class="card-price">21.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('CapCut Pro completa','17.000 COP','IA & Software','CapCut Pro cuenta completa. Editor de video con IA, plantillas premium y sin marca de agua.','cap-cut.jpg','',['Cuenta completa Pro','Sin marca de agua','Plantillas premium ilimitadas','Herramientas IA de edición'])">
+      <div class="card" onclick="openM('CapCut Pro completa','17.000 COP','IA & Software','CapCut Pro cuenta completa. Editor de video con IA, plantillas premium y sin marca de agua.','cap-cut.jpg','🎬',['Cuenta completa Pro','Sin marca de agua','Plantillas premium ilimitadas','Herramientas IA de edición'])">
         <div class="card-thumb"><img src="cap-cut.jpg" alt="CapCut" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Pro</span></div>
-        <div class="card-body"><div class="card-name">CapCut Pro completa</div><div class="card-hint">Video IA sin marcas de agua</div><div class="card-foot"><div class="card-price">17.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">CapCut Pro completa</div><div class="card-hint">Video IA sin marcas de agua</div><div class="card-foot"><div class="card-price">17.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('CapCut Pro 1 dispositivo','10.000 COP','IA & Software','CapCut Pro para 1 dispositivo. Edición de video profesional con IA y plantillas premium.','cap-cut.jpg','',['1 dispositivo Pro','Herramientas IA','Plantillas premium','Sin marca de agua'])">
+      <div class="card" onclick="openM('CapCut Pro 1 dispositivo','10.000 COP','IA & Software','CapCut Pro para 1 dispositivo. Edición de video profesional con IA y plantillas premium.','cap-cut.jpg','🎬',['1 dispositivo Pro','Herramientas IA','Plantillas premium','Sin marca de agua'])">
         <div class="card-thumb"><img src="cap-cut.jpg" alt="CapCut" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">CapCut Pro 1 dispositivo</div><div class="card-hint">CapCut Pro · un solo dispositivo</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">CapCut Pro 1 dispositivo</div><div class="card-hint">CapCut Pro · un solo dispositivo</div><div class="card-foot"><div class="card-price">10.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Canva 12 meses','28.000 COP','IA & Software','Canva Pro por 12 meses completos. Millones de plantillas, fotos premium y herramientas IA de diseño.','canva.jpg','',['12 meses Canva Pro','Millones de plantillas','Fotos y videos premium','Herramientas IA Canva'])">
+      <div class="card" onclick="openM('Canva 12 meses','28.000 COP','IA & Software','Canva Pro por 12 meses completos. Millones de plantillas, fotos premium y herramientas IA de diseño.','canva.jpg','🎨',['12 meses Canva Pro','Millones de plantillas','Fotos y videos premium','Herramientas IA Canva'])">
         <div class="card-thumb"><img src="canva.jpg" alt="Canva" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Mejor valor</span></div>
-        <div class="card-body"><div class="card-name">Canva 12 meses</div><div class="card-hint">Canva Pro · todo el año</div><div class="card-foot"><div class="card-price">28.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Canva 12 meses</div><div class="card-hint">Canva Pro · todo el año</div><div class="card-foot"><div class="card-price">28.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Canva 45 días','6.500 COP','IA & Software','Canva Pro por 45 días. Diseño profesional con acceso a todas las funciones premium sin marca de agua.','canva.jpg','',['45 días Canva Pro','Plantillas premium','Sin marca de agua','Opción económica'])">
+      <div class="card" onclick="openM('Canva 45 días','6.500 COP','IA & Software','Canva Pro por 45 días. Diseño profesional con acceso a todas las funciones premium sin marca de agua.','canva.jpg','🎨',['45 días Canva Pro','Plantillas premium','Sin marca de agua','Opción económica'])">
         <div class="card-thumb"><img src="canva.jpg" alt="Canva" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Canva 45 días</div><div class="card-hint">Canva Pro · 45 días económico</div><div class="card-foot"><div class="card-price">6.500 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Canva 45 días</div><div class="card-hint">Canva Pro · 45 días económico</div><div class="card-foot"><div class="card-price">6.500 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -428,17 +469,17 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="crunchyroll">
     <div class="cat-head"><div class="cat-ico">🎌</div><div class="cat-title">Crunchyroll</div><div class="cat-count">3 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('Crunchyroll original pantalla','8.000 COP','Crunchyroll','Pantalla individual Crunchyroll cuenta original. El mayor catálogo de anime con subtítulos en español.','crunchyroll.jpg','',['Pantalla individual original','Catálogo anime completo','Subtítulos en español','Acceso inmediato'])">
+      <div class="card" onclick="openM('Crunchyroll original pantalla','8.000 COP','Crunchyroll','Pantalla individual Crunchyroll cuenta original. El mayor catálogo de anime con subtítulos en español.','crunchyroll.jpg','🎌',['Pantalla individual original','Catálogo anime completo','Subtítulos en español','Acceso inmediato'])">
         <div class="card-thumb"><img src="crunchyroll.jpg" alt="Crunchyroll" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Original</span></div>
-        <div class="card-body"><div class="card-name">Crunchyroll original pantalla</div><div class="card-hint">Pantalla original · anime ilimitado</div><div class="card-foot"><div class="card-price">8.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Crunchyroll original pantalla</div><div class="card-hint">Pantalla original · anime ilimitado</div><div class="card-foot"><div class="card-price">8.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Crunchyroll completa (genérica)','12.000 COP','Crunchyroll','Cuenta Crunchyroll completa genérica. Todo el catálogo anime en alta calidad con subtítulos en español.','crunchyroll.jpg','',['Cuenta completa genérica','Todo el catálogo anime','Alta calidad de video','Subtítulos en español'])">
+      <div class="card" onclick="openM('Crunchyroll completa (genérica)','12.000 COP','Crunchyroll','Cuenta Crunchyroll completa genérica. Todo el catálogo anime en alta calidad con subtítulos en español.','crunchyroll.jpg','🎌',['Cuenta completa genérica','Todo el catálogo anime','Alta calidad de video','Subtítulos en español'])">
         <div class="card-thumb"><img src="crunchyroll.jpg" alt="Crunchyroll" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">Crunchyroll completa (genérica)</div><div class="card-hint">Cuenta completa · anime HD</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">Crunchyroll completa (genérica)</div><div class="card-hint">Cuenta completa · anime HD</div><div class="card-foot"><div class="card-price">12.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('Crunchyroll pantalla','6.000 COP','Crunchyroll','La opción más económica de Crunchyroll. Pantalla individual genérica para fanáticos del anime.','crunchyroll.jpg','',['Pantalla individual genérica','Anime en HD','Opción más económica','Entrega rápida'])">
-        <div class="card-thumb"><img src="crunchyroll.jpg" alt="Crunchyroll" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag dark">Económico</span></div>
-        <div class="card-body"><div class="card-name">Crunchyroll pantalla</div><div class="card-hint">Pantalla genérica · mejor precio anime</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+      <div class="card" onclick="openM('Crunchyroll pantalla','6.000 COP','Crunchyroll','La opción más económica de Crunchyroll. Pantalla individual genérica para fanáticos del anime.','crunchyroll.jpg','🎌',['Pantalla individual genérica','Anime en HD','Opción más económica','Entrega rápida'])">
+        <div class="card-thumb"><img src="crunchyroll.jpg" alt="Crunchyroll" onerror="this.style.display='none'"><div class="thumb-fallback">/div><span class="tag dark">Económico</span></div>
+        <div class="card-body"><div class="card-name">Crunchyroll pantalla</div><div class="card-hint">Pantalla genérica · mejor precio anime</div><div class="card-foot"><div class="card-price">6.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -447,21 +488,21 @@ footer a:hover{color:var(--white)}
   <div class="cat" data-cat="airpods">
     <div class="cat-head"><div class="cat-ico">🎧</div><div class="cat-title">AirPods — Tecnología</div><div class="cat-count">4 productos</div></div>
     <div class="grid">
-      <div class="card" onclick="openM('AirPods Pro 2','45.000 COP','Tecnología','AirPods Pro 2da generación. Cancelación activa de ruido, audio espacial y chip H2 de Apple.','airpods-pro2.jpg','',['Cancelación activa de ruido','Audio espacial personalizado','Chip H2 Apple','Resistencia al agua IPX4'])">
+      <div class="card" onclick="openM('AirPods Pro 2','45.000 COP','Tecnología','AirPods Pro 2da generación. Cancelación activa de ruido, audio espacial y chip H2 de Apple.','airpods-pro2.jpg','🎧',['Cancelación activa de ruido','Audio espacial personalizado','Chip H2 Apple','Resistencia al agua IPX4'])">
         <div class="card-thumb"><img src="airpods-pro2.jpg" alt="AirPods Pro 2" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Nuevo</span></div>
-        <div class="card-body"><div class="card-name">AirPods Pro 2</div><div class="card-hint">2da generación · cancelación ruido</div><div class="card-foot"><div class="card-price">45.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">AirPods Pro 2</div><div class="card-hint">2da generación · cancelación ruido</div><div class="card-foot"><div class="card-price">45.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('AirPods 4ta generación','55.000 COP','Tecnología','AirPods 4ta generación. Diseño renovado con cancelación activa de ruido y audio adaptativo Apple.','airpods4.jpg','',['4ta generación AirPods','Cancelación activa ruido','Diseño renovado','Chip H2 mejorado'])">
+      <div class="card" onclick="openM('AirPods 4ta generación','55.000 COP','Tecnología','AirPods 4ta generación. Diseño renovado con cancelación activa de ruido y audio adaptativo Apple.','airpods4.jpg','🎧',['4ta generación AirPods','Cancelación activa ruido','Diseño renovado','Chip H2 mejorado'])">
         <div class="card-thumb"><img src="airpods4.jpg" alt="AirPods 4" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
-        <div class="card-body"><div class="card-name">AirPods 4ta generación</div><div class="card-hint">Diseño renovado con ANC activa</div><div class="card-foot"><div class="card-price">55.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">AirPods 4ta generación</div><div class="card-hint">Diseño renovado con ANC activa</div><div class="card-foot"><div class="card-price">55.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('AirPods Pro 3ra generación','80.000 COP','Tecnología','AirPods Pro 3ra generación. La mejor experiencia de audio Apple con cancelación de ruido avanzada.','airpods-pro3.jpg','',['3ra generación Pro','Cancelación ruido mejorada','Batería extendida','Audio espacial avanzado'])">
+      <div class="card" onclick="openM('AirPods Pro 3ra generación','80.000 COP','Tecnología','AirPods Pro 3ra generación. La mejor experiencia de audio Apple con cancelación de ruido avanzada.','airpods-pro3.jpg','🎧',['3ra generación Pro','Cancelación ruido mejorada','Batería extendida','Audio espacial avanzado'])">
         <div class="card-thumb"><img src="airpods-pro3.jpg" alt="AirPods Pro 3" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Top</span></div>
-        <div class="card-body"><div class="card-name">AirPods Pro 3ra generación</div><div class="card-hint">Mejor experiencia de audio Apple</div><div class="card-foot"><div class="card-price">80.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">AirPods Pro 3ra generación</div><div class="card-hint">Mejor experiencia de audio Apple</div><div class="card-foot"><div class="card-price">80.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
-      <div class="card" onclick="openM('AirPods Max','80.000 COP','Tecnología','AirPods Max. Over-ear premium Apple con la mejor cancelación de ruido y audio de alta fidelidad.','airpods-max.jpg','',['Over-ear premium Apple','Mejor ANC disponible','Audio de alta fidelidad','Diseño aluminio y malla'])">
+      <div class="card" onclick="openM('AirPods Max','80.000 COP','Tecnología','AirPods Max. Over-ear premium Apple con la mejor cancelación de ruido y audio de alta fidelidad.','airpods-max.jpg','🎧',['Over-ear premium Apple','Mejor ANC disponible','Audio de alta fidelidad','Diseño aluminio y malla'])">
         <div class="card-thumb"><img src="airpods-max.jpg" alt="AirPods Max" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag gold">Premium</span></div>
-        <div class="card-body"><div class="card-name">AirPods Max</div><div class="card-hint">Over-ear premium · ANC avanzada</div><div class="card-foot"><div class="card-price">80.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-body"><div class="card-name">AirPods Max</div><div class="card-hint">Over-ear premium · ANC avanzada</div><div class="card-foot"><div class="card-price">80.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
@@ -471,25 +512,24 @@ footer a:hover{color:var(--white)}
     <div class="cat-head"><div class="cat-ico">🌐</div><div class="cat-title">Servicios Web</div><div class="cat-count">2 productos</div></div>
     <div class="grid">
       <div class="card" onclick="openM('Página web básica','35.000 COP','Servicios Web','Landing page con diseño moderno y responsivo. Ideal para presentar tu negocio con estilo profesional.','web.jpg','🌐',['Diseño responsivo moderno','Optimizado para móviles','Hasta 3 secciones','Entrega en 24–48 horas'])">
-        <div class="card-thumb"><img src="web.jpg" alt="Página web básica" onerror="this.style.display='none'"><div class="thumb-fallback">🌐</div></div>
-        <div class="card-body"><div class="card-name">Página web básica</div><div class="card-hint">Landing page moderna y responsiva</div><div class="card-foot"><div class="card-price">35.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-thumb"><img src="web.jpg" alt="Página web básica" onerror="this.style.display='none'"><div class="thumb-fallback"></div></div>
+        <div class="card-body"><div class="card-name">Página web básica</div><div class="card-hint">Landing page moderna y responsiva</div><div class="card-foot"><div class="card-price">35.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
       <div class="card" onclick="openM('Página web profesional','120.000 COP','Servicios Web','Web profesional completa con SEO básico, formulario de contacto, animaciones y diseño premium personalizado.','web.jpg','🌐',['Diseño premium personalizado','SEO básico incluido','Formulario de contacto','Múltiples secciones + animaciones'])">
-        <div class="card-thumb"><img src="web.jpg" alt="Página web profesional" onerror="this.style.display='none'"><div class="thumb-fallback">🌐</div><span class="tag red">Destacado</span></div>
-        <div class="card-body"><div class="card-name">Página web profesional</div><div class="card-hint">Web completa con SEO y diseño premium</div><div class="card-foot"><div class="card-price">120.000 <small>COP</small></div><button class="btn-detail">Ver detalles</button></div></div>
+        <div class="card-thumb"><img src="web.jpg" alt="Página web profesional" onerror="this.style.display='none'"><div class="thumb-fallback"></div><span class="tag red">Destacado</span></div>
+        <div class="card-body"><div class="card-name">Página web profesional</div><div class="card-hint">Web completa con SEO y diseño premium</div><div class="card-foot"><div class="card-price">120.000 <small>COP</small></div><button class="btn-detail">Ver detalles →</button></div></div>
       </div>
     </div>
   </div>
-
 </section>
 
 <!-- CONTACTO -->
 <section class="contact" id="contact">
   <div class="contact-inner">
-    <div>
-      <h2>¿Listo para comprar?</h2>
+    <div class="contact-left">
+      <h2>¿Listo para<br><span>comprar?</span></h2>
       <p>Escríbenos por WhatsApp y te atendemos de inmediato. Entrega instantánea y soporte personalizado disponible 24/7.</p>
-      <a href="https://wa.me/573215045684?text=Hola,%20vi%20el%20catálogo%20de%20SmartStore%20y%20quiero%20hacer%20un%20pedido" target="_blank" class="btn-fill red">💬 Ir a WhatsApp ahora</a>
+      <a href="https://wa.me/573215045684?text=Hola,%20vi%20el%20catálogo%20de%20SmartStore%20y%20quiero%20hacer%20un%20pedido" target="_blank" class="btn-fill red" style="display:inline-flex">💬 Ir a WhatsApp ahora</a>
     </div>
     <div class="contact-cards">
       <a href="https://wa.me/573215045684" target="_blank" class="ccard">
@@ -510,10 +550,17 @@ footer a:hover{color:var(--white)}
 
 <footer>
   <div class="foot-inner">
-    <p>© 2025 <a href="#">SmartStore</a> — Tienda digital premium</p>
+    <div class="foot-logo">Smart<span>Store</span></div>
+    <p>© 2025 <a href="#">SmartStore</a> — Tienda digital premium · Colombia</p>
     <p>WhatsApp: <a href="https://wa.me/573215045684">+57 321 504 5684</a></p>
   </div>
 </footer>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/573215045684?text=Hola!%20Vi%20SmartStore%20y%20quiero%20consultar" target="_blank" id="wa-float">
+  <div class="wa-tip">¡Hablemos!</div>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <!-- MODAL -->
 <div class="overlay" id="ov" onclick="closeOv(event)">
@@ -544,12 +591,12 @@ function openM(name,price,cat,desc,img,icon,feats){
   document.getElementById('mprice').textContent=price;
   document.getElementById('mcat').textContent=cat;
   document.getElementById('mdesc').textContent=desc;
-  document.getElementById('micon').textContent=icon;
+  document.getElementById('micon').textContent=icon||'';
   var i=document.getElementById('mimg');
   i.src=img;i.style.display='block';
   i.onerror=function(){this.style.display='none'};
   document.getElementById('mfeats').innerHTML=feats.map(function(f){return'<div class="mfeat">'+f+'</div>'}).join('');
-  var msg=encodeURIComponent('Hola, quiero comprar: '+name+' — '+price);
+  var msg=encodeURIComponent('Hola SmartStore! Me interesa: *'+name+'* — '+price+' ¿Está disponible?');
   document.getElementById('mwa').href='https://wa.me/573215045684?text='+msg;
   document.getElementById('ov').classList.add('on');
   document.body.style.overflow='hidden';
@@ -570,8 +617,27 @@ function doFilter(cat,btn){
 }
 
 window.addEventListener('scroll',function(){
-  document.getElementById('stb').classList.toggle('on',window.scrollY>400)
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
+  document.getElementById('stb').classList.toggle('on',window.scrollY>400);
+},{passive:true});
+
+// Scroll animations
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.07,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.card').forEach(function(c,i){
+  c.style.transitionDelay=(i%6)*60+'ms';
+  obs.observe(c);
+});
+
+// Hamburger
+document.getElementById('ham').addEventListener('click',function(){
+  document.getElementById('nav').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(function(a){
+  a.addEventListener('click',function(){document.getElementById('nav').classList.remove('open')});
 });
 </script>
 </body>
 </html>
+
